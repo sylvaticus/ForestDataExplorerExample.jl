@@ -1,0 +1,59 @@
+# ForestDataExplorer.jl
+
+Download, process and analyse national forest inventory data, and turn them into maps,
+charts and PDF reports.
+
+The package currently supports **France** (metropolitan), using the raw data of the
+[IGN national forest inventory](https://inventaire-forestier.ign.fr/dataIFN/), the Corine
+Land Cover forest classes and the administrative borders of the country, its 13 regions
+and 96 departments.
+
+## Installation
+
+```julia
+using Pkg
+Pkg.add(url="https://github.com/sylvaticus/ForestDataExplorer.jl")
+```
+
+## Quick start
+
+```julia
+using ForestDataExplorer
+
+download_data(country="France")                 # ~210 MB, cached
+df = process_data(country="France")             # indicators by year, unit and species
+
+m = estimate_growth(country="France", subregion="Vosges", specie="Abies alba")
+m(80)                                           # volume of an 80-year-old silver fir, m³
+
+create_report(country="France", subregion="Grand Est", year=2023)  # report_France_Grand Est_2023.pdf
+```
+
+## The four functions
+
+| Function | What it does |
+|:---------|:-------------|
+| [`download_data`](@ref) | downloads and caches the forest inventory, the administrative borders (national, regional, departmental) and the land cover (forest categories) |
+| [`process_data`](@ref) | returns a table with `year`, `country`, `region`, `department`, `specie` (Latin name), `vol`, `vol_ha`, `ha`, `harvested_volumes`, `mortality_pc`, `biological_growth`, `share_bio_growth_harvested` (plus a few helper columns) |
+| [`estimate_growth`](@ref) | fits a sigmoid (Chapman-Richards) growth function for a species, in the whole country, a region or a department |
+| [`create_report`](@ref) | writes a multi-page PDF report with maps and charts for a year, comparing the most variable indicators with the previous year and the average of the five previous years |
+
+The names accepted for species, regions and departments are listed in
+[Species, regions and departments](@ref). How the indicators are computed is explained in
+[Methodology](@ref).
+
+## Cache
+
+Data are stored in a [scratch space](https://github.com/JuliaPackaging/Scratch.jl) of the
+package; set the environment variable `FOREST_DATA_EXPLORER_DIR` to use another folder.
+Processed tables are cached too: pass `force=true` to recompute them.
+
+## Data licences and citation
+
+- Forest inventory: IGN, *Inventaire forestier national français, Données brutes,
+  Campagnes annuelles 2005 et suivantes*, Licence Ouverte Etalab 2.0. IGN requires this
+  source to be cited in any work using the data.
+- Land cover: Corine Land Cover 2006, © European Union, Copernicus Land Monitoring Service.
+- Borders: [france-geojson](https://github.com/gregoiredavid/france-geojson), derived from IGN ADMIN EXPRESS.
+
+The package itself is released under the MIT licence.

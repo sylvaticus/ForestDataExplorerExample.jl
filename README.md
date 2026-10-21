@@ -1,0 +1,48 @@
+# ForestDataExplorer.jl
+
+[![Docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://sylvaticus.github.io/ForestDataExplorer.jl/dev)
+[![CI](https://github.com/sylvaticus/ForestDataExplorer.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/sylvaticus/ForestDataExplorer.jl/actions/workflows/CI.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+Download, process and analyse national forest inventory data: indicators by year,
+region, department and species, sigmoid growth models and multi-page PDF reports with
+maps and charts.
+
+France is supported out of the box (IGN national forest inventory, Corine Land Cover forest
+classes, administrative borders). Other countries can be added as plugins.
+
+```julia
+using Pkg
+Pkg.add(url="https://github.com/sylvaticus/ForestDataExplorer.jl")
+
+using ForestDataExplorer
+
+download_data(country="France")       # inventory, borders, land cover (~210 MB, cached)
+df = process_data(country="France")   # year, country, region, department, specie, vol, vol_ha, ha,
+                                      # harvested_volumes, mortality_pc, biological_growth,
+                                      # share_bio_growth_harvested, ...
+
+m = estimate_growth(country="France", subregion="Grand Est", specie="Fagus sylvatica")
+m(100)                                # volume of a 100-year-old beech (m³)
+
+create_report(country="France", subregion="Grand Est", year=2023)
+```
+
+See the [documentation](https://sylvaticus.github.io/ForestDataExplorer.jl/dev) for a full
+example, the list of species, regions and departments, and the methodology.
+
+## Data sources
+
+- IGN – Inventaire forestier national français, Données brutes, Campagnes annuelles 2005 et
+  suivantes, https://inventaire-forestier.ign.fr/dataIFN/ (Licence Ouverte Etalab 2.0)
+- Corine Land Cover 2006, © European Union, Copernicus Land Monitoring Service
+- [france-geojson](https://github.com/gregoiredavid/france-geojson), derived from IGN ADMIN EXPRESS
+
+## Development
+
+```shell
+julia --project -e 'using Pkg; Pkg.test()'                       # tests (offline, synthetic data)
+FDE_TEST_REAL_DATA=true julia --project -e 'using Pkg; Pkg.test()' # plus an end-to-end test on the real data
+julia --project=docs -e 'using Pkg; Pkg.develop(path="."); Pkg.instantiate()'
+julia --project=docs docs/make.jl                                  # documentation (downloads the real data)
+```

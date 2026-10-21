@@ -1,0 +1,33 @@
+# Data sources of the France plugin.
+# Edit the URLs here (e.g. when IGN publishes a new export) without touching the code.
+
+[inventory]
+# IGN national forest inventory, raw data of the annual campaigns.
+url = "https://inventaire-forestier.ign.fr/dataifn/data/export_dataifn_2005_2025.zip"
+files = ["ARBRE.csv", "PLACETTE.csv", "espar-cdref13.csv"]
+citation = "IGN – Inventaire forestier national français, Données brutes, Campagnes annuelles 2005 et suivantes, https://inventaire-forestier.ign.fr/dataIFN/ (Licence Ouverte Etalab 2.0)"
+
+[landcover]
+# Corine Land Cover 2006, forest classes (311 broadleaved, 312 coniferous, 313 mixed),
+# one shapefile per class, in the ETRS89-LAEA (EPSG:3035) projection.
+base_url = "https://nc.beta-lorraine.fr/public.php/dav/files/ZZm9RzLrj2xABpM"
+crs = "EPSG:3035"
+extensions = ["shp", "shx", "dbf", "prj"]
+citation = "Corine Land Cover 2006, © European Union, Copernicus Land Monitoring Service, European Environment Agency"
+
+[landcover.layers]
+broadleaved = "clc06_c311_fr"
+coniferous = "clc06_c312_fr"
+mixed = "clc06_c313_fr"
+
+[boundaries]
+# Simplified administrative borders of metropolitan France (WGS84 GeoJSON).
+crs = "EPSG:4326"
+country = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/metropole-version-simplifiee.geojson"
+region = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions-version-simplifiee.geojson"
+department = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson"
+citation = "Administrative borders: france-geojson (G. David), derived from IGN ADMIN EXPRESS, https://github.com/gregoiredavid/france-geojson"
+
+[maps]
+# Coordinate reference system used for maps and for the inventory plot coordinates.
+crs = "EPSG:2154"

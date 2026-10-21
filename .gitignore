@@ -1,0 +1,9 @@
+Manifest.toml
+Manifest-v*.toml
+/docs/build/
+/docs/src/example.md
+*.pdf
+*.cov
+lcov.info
+.DS_Store
+.fde-data/
