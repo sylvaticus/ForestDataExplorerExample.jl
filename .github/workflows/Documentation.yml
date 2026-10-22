@@ -20,7 +20,7 @@ jobs:
       statuses: write
     env:
       # the example runs on the real data: keep them between runs
-      FOREST_DATA_EXPLORER_DIR: ${{ github.workspace }}/.fde-data
+      FOREST_DATA_EXPLORER_EXAMPLE_DIR: ${{ github.workspace }}/.fde-data
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2

@@ -1,7 +1,7 @@
 # Generic helpers: cache location, downloads, archives, string matching, arithmetic.
 
 "Environment variable that, when set, overrides the default cache location."
-const CACHE_ENV = "FOREST_DATA_EXPLORER_DIR"
+const CACHE_ENV = "FOREST_DATA_EXPLORER_EXAMPLE_DIR"
 
 """
 $(TYPEDSIGNATURES)
@@ -9,7 +9,7 @@ $(TYPEDSIGNATURES)
 Return the directory where the data of `country` are cached, creating it if needed.
 
 By default this is a [Scratch.jl](https://github.com/JuliaPackaging/Scratch.jl) space
-owned by the package. Set the environment variable `FOREST_DATA_EXPLORER_DIR` to use a
+owned by the package. Set the environment variable `FOREST_DATA_EXPLORER_EXAMPLE_DIR` to use a
 different root folder (e.g. a shared network drive or the test fixtures).
 """
 function data_dir(country::AbstractString)
@@ -18,27 +18,52 @@ function data_dir(country::AbstractString)
     return mkpath(joinpath(root, normalize_name(country)))
 end
 
+"Whether the file at `path` starts like a zip archive."
+is_zip(path::AbstractString) = open(io -> read(io, 4) == b"PK\x03\x04", path)
+
+"Whether the file at `path` looks like an HTML page (e.g. an error or maintenance page)."
+function is_html(path::AbstractString)
+    # files can be binary: lowercase the ASCII letters byte by byte, without decoding
+    head = String(map(b -> UInt8('A') <= b <= UInt8('Z') ? b + 0x20 : b, open(io -> read(io, 512), path)))
+    return occursin("<!doctype html", head) || occursin("<html", head)
+end
+
 """
 $(TYPEDSIGNATURES)
 
 Download `url` to `dest` atomically (via a temporary file), unless `dest` already exists
 and `force` is false. Returns `dest`.
+
+`url` can be a vector of URLs (a source and its mirrors), tried in order until one
+succeeds. A download is rejected when it is an HTML page (servers in maintenance often
+answer with one) or when `validate(path)` returns false; a cached file failing these
+checks is downloaded again.
 """
-function fetch_file(url::AbstractString, dest::AbstractString; force::Bool=false)
+function fetch_file(url, dest::AbstractString; force::Bool=false, validate=Returns(true))
+    valid(path) = !is_html(path) && validate(path)
     if isfile(dest) && !force
-        @debug "Using cached file" dest
-        return dest
+        valid(dest) && return dest
+        @warn "Cached file $(basename(dest)) is not valid, downloading it again"
     end
     mkpath(dirname(dest))
-    @info "Downloading $(basename(dest))" url
     tmp = dest * ".part"
-    try
-        Downloads.download(url, tmp)
-        mv(tmp, dest; force=true)
-    finally
-        isfile(tmp) && rm(tmp)
+    errors = String[]
+    for u in (url isa AbstractString ? [url] : url)
+        @info "Downloading $(basename(dest))" url = u
+        try
+            Downloads.download(u, tmp)
+            if valid(tmp)
+                mv(tmp, dest; force=true)
+                return dest
+            end
+            push!(errors, "$u: the server did not return the expected file (it may be in maintenance)")
+        catch err
+            push!(errors, "$u: $(sprint(showerror, err))")
+        finally
+            isfile(tmp) && rm(tmp)
+        end
     end
-    return dest
+    error("Could not download $(basename(dest)):\n  " * join(errors, "\n  "))
 end
 
 """

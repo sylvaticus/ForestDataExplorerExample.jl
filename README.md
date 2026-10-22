@@ -1,7 +1,7 @@
-# ForestDataExplorerWorkingExample.jl
+# ForestDataExplorerExample.jl
 
 [![Docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://sylvaticus.github.io/ForestDataExplorerExample.jl/dev)
-[![CI](https://github.com/sylvaticus/ForestDataExplorer.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/sylvaticus/ForestDataExplorerExample.jl/actions/workflows/CI.yml)
+[![CI](https://github.com/sylvaticus/ForestDataExplorerExample.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/sylvaticus/ForestDataExplorerExample.jl/actions/workflows/CI.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 
@@ -27,7 +27,7 @@ classes, administrative borders). Other countries can be added as plugins.
 using Pkg
 Pkg.add(url="https://github.com/sylvaticus/ForestDataExplorerExample.jl")
 
-using ForestDataExplorer
+using ForestDataExplorerExample
 
 download_data(country="France")       # inventory, borders, land cover (~210 MB, cached)
 df = process_data(country="France")   # year, country, region, department, specie, vol, vol_ha, ha,

@@ -69,7 +69,7 @@ administrative unit and `specie` (Latin name), with the columns:
 Flows that cannot be estimated for a year (e.g. before the first re-measurements) are
 `missing`. Ratio columns are recomputed from totals at every aggregation level, so to
 obtain all-species values sum the total columns and recompute the ratios
-(see `ForestDataExplorer.summarise`).
+(see `ForestDataExplorerExample.summarise`).
 
 `window` pools the inventory campaigns `year-window+1:year` to reduce sampling noise
 (the official IGN statistics use 5-year windows). The result is cached; use

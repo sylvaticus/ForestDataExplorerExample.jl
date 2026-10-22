@@ -3,7 +3,10 @@
 
 [inventory]
 # IGN national forest inventory, raw data of the annual campaigns.
-url = "https://inventaire-forestier.ign.fr/dataifn/data/export_dataifn_2005_2025.zip"
+# A copy of the IGN export is used first (the IGN server can be in maintenance); the
+# mirrors are tried in order when it is unavailable.
+url = "https://nc.beta-lorraine.fr/s/CsLQmCNfpTR4NWc/download"
+mirrors = ["https://inventaire-forestier.ign.fr/dataifn/data/export_dataifn_2005_2025.zip"]
 files = ["ARBRE.csv", "PLACETTE.csv", "espar-cdref13.csv"]
 citation = "IGN – Inventaire forestier national français, Données brutes, Campagnes annuelles 2005 et suivantes, https://inventaire-forestier.ign.fr/dataIFN/ (Licence Ouverte Etalab 2.0)"
 

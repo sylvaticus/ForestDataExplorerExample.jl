@@ -1,5 +1,5 @@
 """
-    ForestDataExplorer.France
+    ForestDataExplorerExample.France
 
 Country plugin for metropolitan France.
 
@@ -24,8 +24,8 @@ using Shapefile
 using Statistics
 using TOML
 
-import ..ForestDataExplorer as FDE
-using ..ForestDataExplorer: AbstractCountry, AdminShape, Pt
+import ..ForestDataExplorerExample as FDE
+using ..ForestDataExplorerExample: AbstractCountry, AdminShape, Pt
 
 include("admin.jl")
 
@@ -67,9 +67,13 @@ boundaries_file(dir, level) = joinpath(dir, "boundaries", "$level.geojson")
 function FDE.download!(::Plugin, dir::AbstractString; force::Bool=false)
     inv = SOURCES["inventory"]
     if force || !all(f -> isfile(inventory_file(dir, f)), inv["files"])
-        zip = FDE.fetch_file(inv["url"], inventory_file(dir, "export.zip"); force)
-        FDE.extract_zip(zip, dirname(zip); files=inv["files"])
-        rm(zip)
+        urls = [inv["url"]; get(inv, "mirrors", String[])]
+        zip = FDE.fetch_file(urls, inventory_file(dir, "export.zip"); force, validate=FDE.is_zip)
+        try
+            FDE.extract_zip(zip, dirname(zip); files=inv["files"])
+        finally
+            rm(zip)
+        end
     end
     lc = SOURCES["landcover"]
     for layer in values(lc["layers"]), ext in lc["extensions"]

@@ -26,7 +26,7 @@ combine(groupby(df, :level), nrow => :rows, :year => minimum => :first_year, :ye
 # ## National trends
 #
 # Ratios must never be summed: to get all-species values, sum the totals and recompute
-# the ratios, which is what `ForestDataExplorer.summarise` does.
+# the ratios, which is what `ForestDataExplorerExample.summarise` does.
 
 national = ForestDataExplorerExample.summarise(filter(r -> r.level == "country", df), [:year])
 select(national, :year, :vol, :vol_ha, :biological_growth, :harvested_volumes, :mortality_pc,

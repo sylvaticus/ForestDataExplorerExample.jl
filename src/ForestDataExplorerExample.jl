@@ -1,5 +1,5 @@
 """
-    ForestDataExplorer
+    ForestDataExplorerExample
 
 Download, process and analyse national forest inventory data.
 
@@ -11,9 +11,9 @@ The package exposes a small, country-agnostic API:
 - [`create_report`](@ref): produce a multi-page PDF report with maps and charts.
 
 Country-specific logic lives in "country plugins" (see [`AbstractCountry`](@ref)).
-The only plugin currently shipped is [`France`](@ref ForestDataExplorer.France).
+The only plugin currently shipped is [`France`](@ref ForestDataExplorerExample.France).
 """
-module ForestDataExplorer
+module ForestDataExplorerExample
 
 using CSV
 using DataFrames

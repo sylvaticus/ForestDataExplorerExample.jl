@@ -55,8 +55,12 @@ The names accepted for species, regions and departments are listed in
 ## Cache
 
 Data are stored in a [scratch space](https://github.com/JuliaPackaging/Scratch.jl) of the
-package; set the environment variable `FOREST_DATA_EXPLORER_DIR` to use another folder.
+package; set the environment variable `FOREST_DATA_EXPLORER_EXAMPLE_DIR` to use another folder.
 Processed tables are cached too: pass `force=true` to recompute them.
+
+The IGN export is downloaded from a copy hosted on `nc.beta-lorraine.fr`, falling back to
+the IGN server; sources and mirrors are listed in `src/countries/France/sources.toml`.
+Downloads that are not the expected file (e.g. a maintenance page) are rejected.
 
 ## Data licences and citation
 

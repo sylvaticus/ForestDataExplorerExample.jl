@@ -80,6 +80,29 @@ ENV[FDE.CACHE_ENV] = FIXTURE_ROOT
         @test isfile(joinpath(dir, "inventory", "ARBRE.csv"))
     end
 
+    @testset "Download validation and mirrors" begin
+        d = mktempdir()
+        html = joinpath(d, "maintenance.html")
+        write(html, "﻿<!DOCTYPE HTML>\n<html><body>Site en maintenance</body></html>")
+        zip = joinpath(d, "good.zip")
+        write(zip, b"PK\x03\x04 rest of a zip")
+        url(path) = "file://" * replace(path, "\\" => "/")
+        @test FDE.is_html(html) && !FDE.is_zip(html)
+        @test FDE.is_zip(zip) && !FDE.is_html(zip)
+
+        # an HTML answer is rejected and nothing is cached
+        dest = joinpath(d, "out", "export.zip")
+        @test_throws ErrorException FDE.fetch_file(url(html), dest; validate=FDE.is_zip)
+        @test !isfile(dest) && !isfile(dest * ".part")
+        # the mirrors are tried in order
+        @test FDE.fetch_file([url(html), url(joinpath(d, "missing.zip")), url(zip)], dest; validate=FDE.is_zip) == dest
+        @test read(dest) == read(zip)
+        # an invalid cached file (e.g. a maintenance page saved by an older version) is replaced
+        cp(html, dest; force=true)
+        FDE.fetch_file(url(zip), dest; validate=FDE.is_zip)
+        @test FDE.is_zip(dest)
+    end
+
     @testset "Forest cover" begin
         cover = FDE.cached_forest_cover(FDE.get_country("France"))
         for d in FIX_DEPS

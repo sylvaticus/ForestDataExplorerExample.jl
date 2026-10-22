@@ -31,8 +31,8 @@ predict
 current_increment
 mean_increment
 culmination_age
-ForestDataExplorer.chapman_richards
-ForestDataExplorer.fit_chapman_richards
+ForestDataExplorerExample.chapman_richards
+ForestDataExplorerExample.fit_chapman_richards
 ```
 
 ## Internals
