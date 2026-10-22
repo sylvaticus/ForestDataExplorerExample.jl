@@ -6,7 +6,7 @@
 # The first run downloads about 210 MB (inventory, land cover and borders) and processes
 # them, which takes a few minutes; afterwards everything is read from the cache.
 
-using ForestDataExplorer
+using ForestDataExplorerExample
 using DataFrames
 using CairoMakie
 
@@ -28,7 +28,7 @@ combine(groupby(df, :level), nrow => :rows, :year => minimum => :first_year, :ye
 # Ratios must never be summed: to get all-species values, sum the totals and recompute
 # the ratios, which is what `ForestDataExplorer.summarise` does.
 
-national = ForestDataExplorer.summarise(filter(r -> r.level == "country", df), [:year])
+national = ForestDataExplorerExample.summarise(filter(r -> r.level == "country", df), [:year])
 select(national, :year, :vol, :vol_ha, :biological_growth, :harvested_volumes, :mortality_pc,
     :share_bio_growth_harvested)
 

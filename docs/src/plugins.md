@@ -7,7 +7,7 @@ public API ([`download_data`](@ref), [`process_data`](@ref), [`estimate_growth`]
 caching, aggregation to regions and country, subregion and species matching, growth
 models and reports.
 
-The France plugin is the submodule `ForestDataExplorer.France`
+The France plugin is the submodule `ForestDataExplorerExample.France`
 (`src/countries/France/`). Its data sources are configured in `sources.toml`, so URLs can
 be updated without touching the code.
 
@@ -21,7 +21,7 @@ be updated without touching the code.
    `process` must return additive totals at the department (second administrative) level
    with the columns `year, region_code, region, department_code, department, specie, vol,
    ha, harvested_volumes, mortality_volumes, biological_growth, n_plots`.
-3. Include the file in `src/ForestDataExplorer.jl` and register the plugin in `__init__`
+3. Include the file in `src/ForestDataExplorerExample.jl` and register the plugin in `__init__`
    with `register_country!(<Country>.Plugin())`.
 
 In a future version plugins may become package extensions, loaded when the user
@@ -29,6 +29,6 @@ installs a country-specific package; the interface would stay the same.
 
 ```@docs
 AbstractCountry
-ForestDataExplorer.register_country!
-ForestDataExplorer.France
+ForestDataExplorerExample.register_country!
+ForestDataExplorerExample.France
 ```

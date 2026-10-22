@@ -1,7 +1,7 @@
 # API
 
 ```@docs
-ForestDataExplorer
+ForestDataExplorerExample
 ```
 
 ## Main functions
@@ -38,8 +38,8 @@ ForestDataExplorer.fit_chapman_richards
 ## Internals
 
 ```@autodocs
-Modules = [ForestDataExplorer, ForestDataExplorer.France]
+Modules = [ForestDataExplorerExample, ForestDataExplorerExample.France]
 Public = false
-Filter = t -> !(t in (ForestDataExplorer.register_country!, ForestDataExplorer.France,
-                      ForestDataExplorer.chapman_richards, ForestDataExplorer.fit_chapman_richards))
+Filter = t -> !(t in (ForestDataExplorerExample.register_country!, ForestDataExplorerExample.France,
+                      ForestDataExplorerExample.chapman_richards, ForestDataExplorerExample.fit_chapman_richards))
 ```

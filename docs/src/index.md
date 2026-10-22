@@ -1,4 +1,4 @@
-# ForestDataExplorer.jl
+# ForestDataExplorerExample.jl
 
 !!! warning "This is ONLY an example"
     
@@ -22,13 +22,13 @@ and 96 departments.
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/sylvaticus/ForestDataExplorer.jl")
+Pkg.add(url="https://github.com/sylvaticus/ForestDataExplorerExample.jl")
 ```
 
 ## Quick start
 
 ```julia
-using ForestDataExplorer
+using ForestDataExplorerExample
 
 download_data(country="France")                 # ~210 MB, cached
 df = process_data(country="France")             # indicators by year, unit and species

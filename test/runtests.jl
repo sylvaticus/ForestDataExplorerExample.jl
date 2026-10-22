@@ -1,10 +1,10 @@
-using ForestDataExplorer
-using ForestDataExplorer: France
+using ForestDataExplorerExample
+using ForestDataExplorerExample: France
 using DataFrames
 using Statistics
 using Test
 
-const FDE = ForestDataExplorer
+const FDE = ForestDataExplorerExample
 
 include("fixture.jl")
 
@@ -13,7 +13,7 @@ const FIXTURE_ROOT = mktempdir()
 write_fixture(FIXTURE_ROOT)
 ENV[FDE.CACHE_ENV] = FIXTURE_ROOT
 
-@testset "ForestDataExplorer.jl" begin
+@testset "ForestDataExplorerExample.jl" begin
 
     @testset "Utilities" begin
         @test FDE.normalize_name("Provence-Alpes-Côte d'Azur") == "provence alpes cote d azur"

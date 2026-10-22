@@ -1,6 +1,6 @@
 using Documenter
 using Literate
-using ForestDataExplorer
+using ForestDataExplorerExample
 using DataFrames
 
 const SRC = joinpath(@__DIR__, "src")
@@ -61,14 +61,14 @@ write_codes(joinpath(SRC, "codes.md"))
 const IN_GIT = isdir(joinpath(@__DIR__, "..", ".git"))
 
 makedocs(;
-    sitename="ForestDataExplorer.jl",
+    sitename="ForestDataExplorerExample.jl",
     authors="Antonello Lobianco",
-    modules=[ForestDataExplorer],
-    repo=IN_GIT ? Remotes.GitHub("sylvaticus", "ForestDataExplorer.jl") : "",
+    modules=[ForestDataExplorerExample],
+    repo=IN_GIT ? Remotes.GitHub("sylvaticus", "ForestDataExplorerExample.jl") : "",
     remotes=IN_GIT ? Dict() : nothing,
     format=Documenter.HTML(; prettyurls=get(ENV, "CI", "false") == "true", size_threshold=nothing, edit_link="main",
-        example_size_threshold=50_000, repolink="https://github.com/sylvaticus/ForestDataExplorer.jl",
-        canonical="https://sylvaticus.github.io/ForestDataExplorer.jl"),
+        example_size_threshold=50_000, repolink="https://github.com/sylvaticus/ForestDataExplorerExample.jl",
+        canonical="https://sylvaticus.github.io/ForestDataExplorerExample.jl"),
     pages=[
         "Home" => "index.md",
         "Example" => "example.md",
@@ -89,4 +89,4 @@ if isdir(joinpath(BUILD, "example"))
     end
 end
 
-IN_GIT && deploydocs(; repo="github.com/sylvaticus/ForestDataExplorer.jl.git", devbranch="main", push_preview=true)
+IN_GIT && deploydocs(; repo="github.com/sylvaticus/ForestDataExplorerExample.jl.git", devbranch="main", push_preview=true)
